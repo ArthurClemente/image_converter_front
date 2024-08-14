@@ -22,23 +22,25 @@
       <label class="label"> ou <span class="browseFiles"><input type="file" class="defaultFileInput" /><span class="browseFilesText">procure arquivos </span><span>do dispositivo</span></span></label>
     </div>
     <span class="uploadErrorText">
-      <svg fill="#BB0000" height="24px" width="24px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
-        viewBox="0 0 27.963 27.963" xml:space="preserve">
-        <g>
-          <g id="c129_exclamation">
-            <path d="M13.983,0C6.261,0,0.001,6.259,0.001,13.979c0,7.724,6.26,13.984,13.982,13.984s13.98-6.261,13.98-13.984
-              C27.963,6.259,21.705,0,13.983,0z M13.983,26.531c-6.933,0-12.55-5.62-12.55-12.553c0-6.93,5.617-12.548,12.55-12.548
-              c6.931,0,12.549,5.618,12.549,12.548C26.531,20.911,20.913,26.531,13.983,26.531z"/>
-            <polygon points="15.579,17.158 16.191,4.579 11.804,4.579 12.414,17.158 		"/>
-            <path d="M13.998,18.546c-1.471,0-2.5,1.029-2.5,2.526c0,1.443,0.999,2.528,2.444,2.528h0.056c1.499,0,2.469-1.085,2.469-2.528
-              C16.441,19.575,15.468,18.546,13.998,18.546z"/>
+      <div class="exclamationMark">
+        <svg fill="#BB0000" height="34px" width="24px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+          viewBox="0 0 27.963 27.963" xml:space="preserve">
+          <g>
+            <g id="c129_exclamation">
+              <path d="M13.983,0C6.261,0,0.001,6.259,0.001,13.979c0,7.724,6.26,13.984,13.982,13.984s13.98-6.261,13.98-13.984
+                C27.963,6.259,21.705,0,13.983,0z M13.983,26.531c-6.933,0-12.55-5.62-12.55-12.553c0-6.93,5.617-12.548,12.55-12.548
+                c6.931,0,12.549,5.618,12.549,12.548C26.531,20.911,20.913,26.531,13.983,26.531z"/>
+              <polygon points="15.579,17.158 16.191,4.579 11.804,4.579 12.414,17.158 		"/>
+              <path d="M13.998,18.546c-1.471,0-2.5,1.029-2.5,2.526c0,1.443,0.999,2.528,2.444,2.528h0.056c1.499,0,2.469-1.085,2.469-2.528
+                C16.441,19.575,15.468,18.546,13.998,18.546z"/>
+            </g>
+            <g id="Capa_1_207_">
+            </g>
           </g>
-          <g id="Capa_1_207_">
-          </g>
-        </g>
-      </svg>
-      Por favor, selecione uma imagem válida
-      <span class="cancelAlertButton">
+        </svg>
+      </div>
+        Por favor, selecione uma imagem válida
+      <div class="cancelAlertButton">
         <svg fill="#BB0000" height="24px" width="24px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
           viewBox="0 0 512 512" xml:space="preserve">
           <g>
@@ -56,16 +58,16 @@
             </g>
           </g>
         </svg>
-      </span>
+      </div>
     </span>
     <div class="fileInfoArea">
       <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M14.2639 15.9375L12.5958 14.2834C11.7909 13.4851 11.3884 13.086 10.9266 12.9401C10.5204 12.8118 10.0838 12.8165 9.68048 12.9536C9.22188 13.1095 8.82814 13.5172 8.04068 14.3326L4.04409 18.2801M14.2639 15.9375L14.6053 15.599C15.4112 14.7998 15.8141 14.4002 16.2765 14.2543C16.6831 14.126 17.12 14.1311 17.5236 14.2687C17.9824 14.4251 18.3761 14.8339 19.1634 15.6514L20 16.4934M14.2639 15.9375L18.275 19.9565M18.275 19.9565C17.9176 20 17.4543 20 16.8 20H7.2C6.07989 20 5.51984 20 5.09202 19.782C4.71569 19.5903 4.40973 19.2843 4.21799 18.908C4.12796 18.7313 4.07512 18.5321 4.04409 18.2801M18.275 19.9565C18.5293 19.9256 18.7301 19.8727 18.908 19.782C19.2843 19.5903 19.5903 19.2843 19.782 18.908C20 18.4802 20 17.9201 20 16.8V16.4934M4.04409 18.2801C4 17.9221 4 17.4575 4 16.8V7.2C4 6.0799 4 5.51984 4.21799 5.09202C4.40973 4.71569 4.71569 4.40973 5.09202 4.21799C5.51984 4 6.07989 4 7.2 4H16.8C17.9201 4 18.4802 4 18.908 4.21799C19.2843 4.40973 19.5903 4.71569 19.782 5.09202C20 5.51984 20 6.0799 20 7.2V16.4934M17 8.99989C17 10.1045 16.1046 10.9999 15 10.9999C13.8954 10.9999 13 10.1045 13 8.99989C13 7.89532 13.8954 6.99989 15 6.99989C16.1046 6.99989 17 7.89532 17 8.99989Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M14.2639 15.9375L12.5958 14.2834C11.7909 13.4851 11.3884 13.086 10.9266 12.9401C10.5204 12.8118 10.0838 12.8165 9.68048 12.9536C9.22188 13.1095 8.82814 13.5172 8.04068 14.3326L4.04409 18.2801M14.2639 15.9375L14.6053 15.599C15.4112 14.7998 15.8141 14.4002 16.2765 14.2543C16.6831 14.126 17.12 14.1311 17.5236 14.2687C17.9824 14.4251 18.3761 14.8339 19.1634 15.6514L20 16.4934M14.2639 15.9375L18.275 19.9565M18.275 19.9565C17.9176 20 17.4543 20 16.8 20H7.2C6.07989 20 5.51984 20 5.09202 19.782C4.71569 19.5903 4.40973 19.2843 4.21799 18.908C4.12796 18.7313 4.07512 18.5321 4.04409 18.2801M18.275 19.9565C18.5293 19.9256 18.7301 19.8727 18.908 19.782C19.2843 19.5903 19.5903 19.2843 19.782 18.908C20 18.4802 20 17.9201 20 16.8V16.4934M4.04409 18.2801C4 17.9221 4 17.4575 4 16.8V7.2C4 6.0799 4 5.51984 4.21799 5.09202C4.40973 4.71569 4.71569 4.40973 5.09202 4.21799C5.51984 4 6.07989 4 7.2 4H16.8C17.9201 4 18.4802 4 18.908 4.21799C19.2843 4.40973 19.5903 4.71569 19.782 5.09202C20 5.51984 20 6.0799 20 7.2V16.4934M17 8.99989C17 10.1045 16.1046 10.9999 15 10.9999C13.8954 10.9999 13 10.1045 13 8.99989C13 7.89532 13.8954 6.99989 15 6.99989C16.1046 6.99989 17 7.89532 17 8.99989Z" stroke="#f7fff7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
       <span class="fileName"> </span> | <span class="fileSize"> </span>
       <span class="removeFileButton">
         <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M18 6L17.1991 18.0129C17.129 19.065 17.0939 19.5911 16.8667 19.99C16.6666 20.3412 16.3648 20.6235 16.0011 20.7998C15.588 21 15.0607 21 14.0062 21H9.99377C8.93927 21 8.41202 21 7.99889 20.7998C7.63517 20.6235 7.33339 20.3412 7.13332 19.99C6.90607 19.5911 6.871 19.065 6.80086 18.0129L6 6M4 6H20M16 6L15.7294 5.18807C15.4671 4.40125 15.3359 4.00784 15.0927 3.71698C14.8779 3.46013 14.6021 3.26132 14.2905 3.13878C13.9376 3 13.523 3 12.6936 3H11.3064C10.477 3 10.0624 3 9.70951 3.13878C9.39792 3.26132 9.12208 3.46013 8.90729 3.71698C8.66405 4.00784 8.53292 4.40125 8.27064 5.18807L8 6M14 10V17M10 10V17" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M18 6L17.1991 18.0129C17.129 19.065 17.0939 19.5911 16.8667 19.99C16.6666 20.3412 16.3648 20.6235 16.0011 20.7998C15.588 21 15.0607 21 14.0062 21H9.99377C8.93927 21 8.41202 21 7.99889 20.7998C7.63517 20.6235 7.33339 20.3412 7.13332 19.99C6.90607 19.5911 6.871 19.065 6.80086 18.0129L6 6M4 6H20M16 6L15.7294 5.18807C15.4671 4.40125 15.3359 4.00784 15.0927 3.71698C14.8779 3.46013 14.6021 3.26132 14.2905 3.13878C13.9376 3 13.523 3 12.6936 3H11.3064C10.477 3 10.0624 3 9.70951 3.13878C9.39792 3.26132 9.12208 3.46013 8.90729 3.71698C8.66405 4.00784 8.53292 4.40125 8.27064 5.18807L8 6M14 10V17M10 10V17" stroke="#f7fff7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </span>
       <div class="progressBar"> </div>
@@ -77,7 +79,7 @@
 <style scoped>
 #imageInput {
   background-color: #f7fff7;
-  width: 600px;
+  width: 420px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -91,7 +93,7 @@
   border-radius: 40px;
   margin: 10px 0 15px;
   padding: 30px 50px;
-  width: 100%;
+  width: 350px;
   text-align: center;
 }
 .inputZoneText {
@@ -115,14 +117,65 @@
 }
 .uploadErrorText {
   background-color: #ffc6c4;
-  font-size: 18px;
+  font-size: 16px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   margin: 5px 0;
-  padding: 5px 10px 5px 30px;
+  padding: 10px 30px;
   border-radius: 5px;
   color: #BB0000;
   /* display: none; */
+}
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.cancelAlertButton {
+  cursor: pointer;
+}
+.fileInfoArea {
+  color: #f7fff7;
+  background-color: #023e8a;
+  transition: all 1s;
+  width: 390px;
+  position: relative;
+  /* display: none; */
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0 15px;
+  padding: 10px 20px;
+  border-radius: 25px;
+}
+.fileInfoArea > svg {
+  margin-right: 10px;
+}
+.fileInfo {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+}
+.fileName, .fileSize {
+  padding: 0 3px;
+}
+.removeFileButton {
+  cursor: pointer;
+}
+.convertButton {
+  background-color: #023e8a;
+  color: #f7fff7;
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  border: none;
+  border-radius: 20px;
+  margin: 10px;
+  padding: 8px 50px;
+  cursor: pointer;
 }
 </style>

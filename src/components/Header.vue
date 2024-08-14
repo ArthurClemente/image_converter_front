@@ -11,7 +11,7 @@
     height: 45px;
   }
   .headerTitleArea {
-    background-color: #90e0ef;
+    background-color: #0077b6;
     height: 100%;
     width: 100%;
     display: flex;
@@ -19,6 +19,6 @@
     justify-content: center;
   }
   .headerTitle {
-    font-family: 'Roboto', sans-serif;
+    color: #fff;
   }
 </style>

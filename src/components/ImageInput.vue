@@ -1,25 +1,27 @@
 <template>
   <section id="imageInput">
-    <div class="inputZone">
-      <svg fill="#000000" height="50px" width="50px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 384.97 384.97" xml:space="preserve">
-        <g>
-          <g id="Upload">
-            <path
-              d="M372.939,264.641c-6.641,0-12.03,5.39-12.03,12.03v84.212H24.061v-84.212c0-6.641-5.39-12.03-12.03-12.03S0,270.031,0,276.671v96.242c0,6.641,5.39,12.03,12.03,12.03h360.909c6.641,0,12.03-5.39,12.03-12.03v-96.242C384.97,270.019,379.58,264.641,372.939,264.641z" />
-            <path
-              d="M117.067,103.507l63.46-62.558v235.71c0,6.641,5.438,12.03,12.151,12.03c6.713,0,12.151-5.39,12.151-12.03V40.95l63.46,62.558c4.74,4.704,12.439,4.704,17.179,0c4.74-4.704,4.752-12.319,0-17.011l-84.2-82.997c-4.692-4.656-12.584-4.608-17.191,0L99.888,86.496c-4.752,4.704-4.74,12.319,0,17.011C104.628,108.211,112.327,108.211,117.067,103.507z" />
+    <div class="inputZone" @click="inputClick">
+      <div class="iconArea">
+        <svg fill="#000000" height="50px" width="50px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 384.97 384.97" xml:space="preserve">
+          <g>
+            <g id="Upload">
+              <path
+                d="M372.939,264.641c-6.641,0-12.03,5.39-12.03,12.03v84.212H24.061v-84.212c0-6.641-5.39-12.03-12.03-12.03S0,270.031,0,276.671v96.242c0,6.641,5.39,12.03,12.03,12.03h360.909c6.641,0,12.03-5.39,12.03-12.03v-96.242C384.97,270.019,379.58,264.641,372.939,264.641z" />
+              <path
+                d="M117.067,103.507l63.46-62.558v235.71c0,6.641,5.438,12.03,12.151,12.03c6.713,0,12.151-5.39,12.151-12.03V40.95l63.46,62.558c4.74,4.704,12.439,4.704,17.179,0c4.74-4.704,4.752-12.319,0-17.011l-84.2-82.997c-4.692-4.656-12.584-4.608-17.191,0L99.888,86.496c-4.752,4.704-4.74,12.319,0,17.011C104.628,108.211,112.327,108.211,117.067,103.507z" />
+            </g>
+            <g></g>
+            <g></g>
+            <g></g>
+            <g></g>
+            <g></g>
+            <g></g>
           </g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-          <g></g>
-        </g>
-      </svg>
+        </svg>
+      </div>
       <h3 class="inputZoneText">Arraste uma imagem aqui</h3>
-      <label class="label"> ou <span class="browseFiles"><input type="file" class="defaultFileInput" /><span class="browseFilesText">procure arquivos </span><span>do dispositivo</span></span></label>
+      <label class="label"> ou <span class="browseFiles"><input type="file" id="defaultFileInput" @change="validateImage"/><span class="browseFilesText">procure arquivos </span><span>do dispositivo</span></span></label>
     </div>
     <span class="uploadErrorText">
       <div class="exclamationMark">
@@ -70,11 +72,42 @@
           <path d="M18 6L17.1991 18.0129C17.129 19.065 17.0939 19.5911 16.8667 19.99C16.6666 20.3412 16.3648 20.6235 16.0011 20.7998C15.588 21 15.0607 21 14.0062 21H9.99377C8.93927 21 8.41202 21 7.99889 20.7998C7.63517 20.6235 7.33339 20.3412 7.13332 19.99C6.90607 19.5911 6.871 19.065 6.80086 18.0129L6 6M4 6H20M16 6L15.7294 5.18807C15.4671 4.40125 15.3359 4.00784 15.0927 3.71698C14.8779 3.46013 14.6021 3.26132 14.2905 3.13878C13.9376 3 13.523 3 12.6936 3H11.3064C10.477 3 10.0624 3 9.70951 3.13878C9.39792 3.26132 9.12208 3.46013 8.90729 3.71698C8.66405 4.00784 8.53292 4.40125 8.27064 5.18807L8 6M14 10V17M10 10V17" stroke="#f7fff7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </span>
-      <div class="progressBar"> </div>
+      <!-- <div class="progressBar"> </div> -->
     </div>
     <button type="button" class="convertButton"> Converter Imagem </button>
   </section>
 </template>
+
+<script setup lang="ts">
+import { ref } from 'vue';
+
+const fileName = ref<string>(''); 
+const fileSize = ref<string>('');
+const file = ref<File | null>(null);
+
+function inputClick() {
+  const fileInput = document.getElementById('defaultFileInput');
+  if (fileInput) {
+    fileInput.click();
+  }
+}
+
+function validateImage(event: Event) {
+  const target = event.target as HTMLInputElement;
+  if (target.files) {
+    const file = target.files[0];
+    // check if the file is png, jpeg, jpg, gif or webp
+    if (file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg' || file.type === 'image/gif' || file.type === 'image/webp') {
+      fileName.value = file.name;
+      fileSize.value = `${(file.size / 1024).toFixed(2)} KB`;
+    } else {
+      // show error message
+      alert('Por favor, selecione uma imagem válida');
+      return;
+    }
+  }
+}
+</script>
 
 <style scoped>
 #imageInput {
@@ -112,7 +145,7 @@
   position: relative;
   top: -25px;
 }
-.defaultFileInput {
+#defaultFileInput {
   opacity: 0;
 }
 .uploadErrorText {

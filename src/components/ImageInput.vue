@@ -1,6 +1,6 @@
 <template>
   <section id="imageInput">
-    <div class="inputZone" @click="inputClick">
+    <div class="inputZone" @click="inputClick" @dragover.prevent="dragOverHandler" @dragleave="dragLeaveHandler" @dragend="dragLeaveHandler" @drop.prevent="dropImageHandler">
       <div class="iconArea">
         <svg fill="#000000" height="50px" width="50px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 384.97 384.97" xml:space="preserve">
@@ -21,7 +21,8 @@
         </svg>
       </div>
       <h3 class="inputZoneText">Arraste uma imagem aqui</h3>
-      <label class="label"> ou <span class="browseFiles"><input type="file" id="defaultFileInput" @change="validateImage"/><span class="browseFilesText">procure arquivos </span><span>do dispositivo</span></span></label>
+      <span class="inputZoneSpan"> ou <span class="browseFilesText">procure arquivos </span>do dispositivo</span>
+      <input type="file" id="defaultFileInput" @change="inputChangeHandler"/>
     </div>
     <span class="uploadErrorText">
       <div class="exclamationMark">
@@ -92,20 +93,82 @@ function inputClick() {
   }
 }
 
-function validateImage(event: Event) {
+function validateImage(file: File): Boolean {
+  // check if the file is png, jpeg, jpg, gif or webp
+  if (file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg' || file.type === 'image/gif' || file.type === 'image/webp') {
+    fileName.value = file.name;
+    fileSize.value = `${(file.size / 1024).toFixed(2)} KB`;
+    return true;
+  } else {
+    // show error message
+    alert('Por favor, selecione uma imagem válida');
+    return false;
+  }
+}
+
+function dragOverHandler(event: Event) {
+  const inputZoneElement = event.currentTarget as HTMLElement;
+
+  inputZoneElement.classList.add("dropZoneOver");
+}
+
+function dragLeaveHandler(event: Event) {
+  const inputZoneElement = event.currentTarget as HTMLElement;
+
+  inputZoneElement.classList.remove("dropZoneOver");
+}
+
+function inputChangeHandler(event: Event) {
   const target = event.target as HTMLInputElement;
   if (target.files) {
-    const file = target.files[0];
-    // check if the file is png, jpeg, jpg, gif or webp
-    if (file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg' || file.type === 'image/gif' || file.type === 'image/webp') {
-      fileName.value = file.name;
-      fileSize.value = `${(file.size / 1024).toFixed(2)} KB`;
-    } else {
-      // show error message
-      alert('Por favor, selecione uma imagem válida');
+    let file = target.files[0];
+    validateImage(file);
+  }
+}
+
+function dropImageHandler(event: DragEvent) {
+  const fileInput = document.getElementById('defaultFileInput') as HTMLInputElement;
+  const inputZoneElement = event.currentTarget as HTMLElement;
+
+  if(event.dataTransfer?.files.length) {
+    if(validateImage(event.dataTransfer.files[0])){
+      fileInput.files = event.dataTransfer.files;
+      showImagePreview(inputZoneElement, event.dataTransfer.files[0]);
+    }else{
       return;
     }
   }
+
+  inputZoneElement.classList.remove("dropZoneOver");
+}
+
+function showImagePreview(inputZoneElement: HTMLElement, file: File) {
+  let imagePreviewElement = inputZoneElement.querySelector('.dropZoneImagePreview') as HTMLElement;
+
+  const inputZoneSvg = inputZoneElement.querySelector('.iconArea');
+  const inputZoneText = inputZoneElement.querySelector('.inputZoneText');
+  const inputZoneSpan = inputZoneElement.querySelector('.inputZoneSpan');
+
+  if(inputZoneSvg && inputZoneText && inputZoneSpan){
+    inputZoneSvg.remove();
+    inputZoneText.remove();
+    inputZoneSpan.remove();
+  }
+
+  if(!imagePreviewElement) {
+    imagePreviewElement = document.createElement('div');
+    imagePreviewElement.classList.add('dropZoneImagePreview');
+    inputZoneElement.appendChild(imagePreviewElement);
+  }
+
+  imagePreviewElement.dataset.label = file.name;
+
+  const reader = new FileReader();
+
+  reader.readAsDataURL(file);
+  reader.onload = () => {
+    imagePreviewElement.style.backgroundImage = `url('${reader.result}')`;
+  };
 }
 </script>
 
@@ -133,7 +196,7 @@ function validateImage(event: Event) {
   font-size: 26px;
   margin: 15px 0;
 }
-.label {
+.inputZoneSpan {
   font-size: 20px;
 }
 .browseFilesText {
@@ -146,7 +209,7 @@ function validateImage(event: Event) {
   top: -25px;
 }
 #defaultFileInput {
-  opacity: 0;
+  display: none;
 }
 .uploadErrorText {
   background-color: #ffc6c4;

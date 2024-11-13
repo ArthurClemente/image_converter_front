@@ -23,16 +23,16 @@
           <path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/>
         </svg>
       </div>
-      <div v-if="!fileLoaded">
+      <div v-show="!fileLoaded">
         <h3 class="inputZoneText">Arraste uma imagem aqui</h3>
         <span class="inputZoneSpan"> ou <span class="browseFilesText" @click="inputClick">procure arquivos </span>do dispositivo</span>
       </div>
-      <div v-else>
+      <div v-show="fileLoaded">
         <h3 class="inputZoneText">Arquivo carregado com sucesso</h3>
       </div>
       <input type="file" id="defaultFileInput" @change.prevent="inputChangeHandler"/>
     </div>
-    <span class="uploadErrorText">
+    <span class="uploadErrorText" v-show="errorMessage">
       <div class="exclamationMark">
         <svg fill="#BB0000" height="34px" width="24px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
           viewBox="0 0 27.963 27.963" xml:space="preserve">
@@ -50,7 +50,7 @@
           </g>
         </svg>
       </div>
-        Por favor, selecione uma imagem válida
+        {{ errorMessage }}
       <div class="cancelAlertButton" @click="closeAlert">
         <svg fill="#BB0000" height="24px" width="24px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
           viewBox="0 0 512 512" xml:space="preserve">
@@ -71,7 +71,7 @@
         </svg>
       </div>
     </span>
-    <div class="fileInfoArea">
+    <div class="fileInfoArea" v-show="fileLoaded">
       <div class="fileInfo">
         <svg class="fileIcon" width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M14.2639 15.9375L12.5958 14.2834C11.7909 13.4851 11.3884 13.086 10.9266 12.9401C10.5204 12.8118 10.0838 12.8165 9.68048 12.9536C9.22188 13.1095 8.82814 13.5172 8.04068 14.3326L4.04409 18.2801M14.2639 15.9375L14.6053 15.599C15.4112 14.7998 15.8141 14.4002 16.2765 14.2543C16.6831 14.126 17.12 14.1311 17.5236 14.2687C17.9824 14.4251 18.3761 14.8339 19.1634 15.6514L20 16.4934M14.2639 15.9375L18.275 19.9565M18.275 19.9565C17.9176 20 17.4543 20 16.8 20H7.2C6.07989 20 5.51984 20 5.09202 19.782C4.71569 19.5903 4.40973 19.2843 4.21799 18.908C4.12796 18.7313 4.07512 18.5321 4.04409 18.2801M18.275 19.9565C18.5293 19.9256 18.7301 19.8727 18.908 19.782C19.2843 19.5903 19.5903 19.2843 19.782 18.908C20 18.4802 20 17.9201 20 16.8V16.4934M4.04409 18.2801C4 17.9221 4 17.4575 4 16.8V7.2C4 6.0799 4 5.51984 4.21799 5.09202C4.40973 4.71569 4.71569 4.40973 5.09202 4.21799C5.51984 4 6.07989 4 7.2 4H16.8C17.9201 4 18.4802 4 18.908 4.21799C19.2843 4.40973 19.5903 4.71569 19.782 5.09202C20 5.51984 20 6.0799 20 7.2V16.4934M17 8.99989C17 10.1045 16.1046 10.9999 15 10.9999C13.8954 10.9999 13 10.1045 13 8.99989C13 7.89532 13.8954 6.99989 15 6.99989C16.1046 6.99989 17 7.89532 17 8.99989Z" stroke="#f7fff7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -95,6 +95,9 @@ import { ref, watch } from 'vue';
 const fileName = ref<string>(''); 
 const fileSize = ref<string>('');
 const fileLoaded = ref<File | null>(null);
+const errorMessage = ref<string>('');
+
+const maxFileSize = 10485760; // 10MB
 
 const props = defineProps(['loadedImage']);
 
@@ -106,12 +109,15 @@ function inputClick() {
 }
 
 function closeAlert() {
-  console.log('close alert');
-  const errorText = document.querySelector('.uploadErrorText') as HTMLElement;
-  errorText.style.display = 'none';
+  errorMessage.value = '';
 }
 
 function validateImage(file: File): Boolean {
+  // limit the size of file to 10MB
+  if (file.size > maxFileSize) {
+    errorMessage.value = 'O tamanho máximo permitido é de 10MB.';
+    return false;
+  }
   // check if the file is png, jpeg, jpg, gif or webp
   if (file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg' || file.type === 'image/gif' || file.type === 'image/webp') {
     fileName.value = file.name;
@@ -119,9 +125,7 @@ function validateImage(file: File): Boolean {
     fileLoaded.value = file;
     return true;
   } else {
-    // show error message
-    const errorText = document.querySelector('.uploadErrorText') as HTMLElement;
-    errorText.style.display = 'flex';
+    errorMessage.value = 'Por favor selecione uma imagem válida: PNG, JPEG, JPG, GIF ou WEBP.';
     return false;
   }
 }
@@ -145,16 +149,6 @@ function removeFile() {
 watch(() => props.loadedImage, (newVal) => {
   if (newVal) {
     validateImage(newVal);
-  }
-});
-
-watch(() => fileLoaded.value, (newVal) => {
-  const fileInfoArea = document.querySelector('.fileInfoArea') as HTMLElement;
-
-  if (newVal) {
-    fileInfoArea.style.display = 'flex';
-  } else {
-    fileInfoArea.style.display = 'none';
   }
 });
 
@@ -209,7 +203,6 @@ watch(() => fileLoaded.value, (newVal) => {
   padding: 10px 30px;
   border-radius: 5px;
   color: #BB0000;
-  display: none;
 }
 @keyframes fadeIn {
   0% {
@@ -228,7 +221,7 @@ watch(() => fileLoaded.value, (newVal) => {
   transition: all 1s;
   width: 390px;
   position: relative;
-  display: none;
+  display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;

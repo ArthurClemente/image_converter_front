@@ -1,6 +1,6 @@
 <template>
-  <section id="imageInput">
-    <div class="inputZone" @click="inputClick" @dragover.prevent="dragOverHandler" @dragleave="dragLeaveHandler" @dragend="dragLeaveHandler" @drop.prevent="dropImageHandler">
+  <section id="imageInput" @click="inputClick">
+    <div class="inputZone">
       <div class="iconArea">
         <svg fill="#000000" height="50px" width="50px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 384.97 384.97" xml:space="preserve">
@@ -22,7 +22,7 @@
       </div>
       <h3 class="inputZoneText">Arraste uma imagem aqui</h3>
       <span class="inputZoneSpan"> ou <span class="browseFilesText">procure arquivos </span>do dispositivo</span>
-      <input type="file" id="defaultFileInput" @change="inputChangeHandler"/>
+      <input type="file" id="defaultFileInput" @change.prevent="inputChangeHandler"/>
     </div>
     <span class="uploadErrorText">
       <div class="exclamationMark">
@@ -43,7 +43,7 @@
         </svg>
       </div>
         Por favor, selecione uma imagem válida
-      <div class="cancelAlertButton">
+      <div class="cancelAlertButton" @click="closeAlert">
         <svg fill="#BB0000" height="24px" width="24px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
           viewBox="0 0 512 512" xml:space="preserve">
           <g>
@@ -80,11 +80,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const fileName = ref<string>(''); 
 const fileSize = ref<string>('');
-const file = ref<File | null>(null);
+const fileLoaded = ref<File | null>(null);
+
+const props = defineProps(['loadedImage']);
 
 function inputClick() {
   const fileInput = document.getElementById('defaultFileInput');
@@ -93,29 +95,25 @@ function inputClick() {
   }
 }
 
+function closeAlert() {
+  console.log('close alert');
+  const errorText = document.querySelector('.uploadErrorText') as HTMLElement;
+  errorText.style.display = 'none';
+}
+
 function validateImage(file: File): Boolean {
   // check if the file is png, jpeg, jpg, gif or webp
   if (file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg' || file.type === 'image/gif' || file.type === 'image/webp') {
     fileName.value = file.name;
     fileSize.value = `${(file.size / 1024).toFixed(2)} KB`;
+    fileLoaded.value = file;
     return true;
   } else {
     // show error message
-    alert('Por favor, selecione uma imagem válida');
+    const errorText = document.querySelector('.uploadErrorText') as HTMLElement;
+    errorText.style.display = 'flex';
     return false;
   }
-}
-
-function dragOverHandler(event: Event) {
-  const inputZoneElement = event.currentTarget as HTMLElement;
-
-  inputZoneElement.classList.add("dropZoneOver");
-}
-
-function dragLeaveHandler(event: Event) {
-  const inputZoneElement = event.currentTarget as HTMLElement;
-
-  inputZoneElement.classList.remove("dropZoneOver");
 }
 
 function inputChangeHandler(event: Event) {
@@ -126,50 +124,12 @@ function inputChangeHandler(event: Event) {
   }
 }
 
-function dropImageHandler(event: DragEvent) {
-  const fileInput = document.getElementById('defaultFileInput') as HTMLInputElement;
-  const inputZoneElement = event.currentTarget as HTMLElement;
-
-  if(event.dataTransfer?.files.length) {
-    if(validateImage(event.dataTransfer.files[0])){
-      fileInput.files = event.dataTransfer.files;
-      showImagePreview(inputZoneElement, event.dataTransfer.files[0]);
-    }else{
-      return;
-    }
+watch(() => props.loadedImage, (newVal) => {
+  if (newVal) {
+    validateImage(newVal);
   }
+});
 
-  inputZoneElement.classList.remove("dropZoneOver");
-}
-
-function showImagePreview(inputZoneElement: HTMLElement, file: File) {
-  let imagePreviewElement = inputZoneElement.querySelector('.dropZoneImagePreview') as HTMLElement;
-
-  const inputZoneSvg = inputZoneElement.querySelector('.iconArea');
-  const inputZoneText = inputZoneElement.querySelector('.inputZoneText');
-  const inputZoneSpan = inputZoneElement.querySelector('.inputZoneSpan');
-
-  if(inputZoneSvg && inputZoneText && inputZoneSpan){
-    inputZoneSvg.remove();
-    inputZoneText.remove();
-    inputZoneSpan.remove();
-  }
-
-  if(!imagePreviewElement) {
-    imagePreviewElement = document.createElement('div');
-    imagePreviewElement.classList.add('dropZoneImagePreview');
-    inputZoneElement.appendChild(imagePreviewElement);
-  }
-
-  imagePreviewElement.dataset.label = file.name;
-
-  const reader = new FileReader();
-
-  reader.readAsDataURL(file);
-  reader.onload = () => {
-    imagePreviewElement.style.backgroundImage = `url('${reader.result}')`;
-  };
-}
 </script>
 
 <style scoped>
@@ -221,7 +181,7 @@ function showImagePreview(inputZoneElement: HTMLElement, file: File) {
   padding: 10px 30px;
   border-radius: 5px;
   color: #BB0000;
-  /* display: none; */
+  display: none;
 }
 @keyframes fadeIn {
   0% {
@@ -240,7 +200,7 @@ function showImagePreview(inputZoneElement: HTMLElement, file: File) {
   transition: all 1s;
   width: 390px;
   position: relative;
-  /* display: none; */
+  display: none;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;

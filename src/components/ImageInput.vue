@@ -1,9 +1,9 @@
 <template>
-  <section id="imageInput" @click="inputClick">
+  <section id="imageInput">
     <div class="inputZone">
       <div class="iconArea">
         <svg fill="#000000" height="50px" width="50px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 384.97 384.97" xml:space="preserve">
+        xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 384.97 384.97" xml:space="preserve" v-if="!fileLoaded">
           <g>
             <g id="Upload">
               <path
@@ -19,9 +19,17 @@
             <g></g>
           </g>
         </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#000000" v-else>
+          <path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/>
+        </svg>
       </div>
-      <h3 class="inputZoneText">Arraste uma imagem aqui</h3>
-      <span class="inputZoneSpan"> ou <span class="browseFilesText">procure arquivos </span>do dispositivo</span>
+      <div v-if="!fileLoaded">
+        <h3 class="inputZoneText">Arraste uma imagem aqui</h3>
+        <span class="inputZoneSpan"> ou <span class="browseFilesText" @click="inputClick">procure arquivos </span>do dispositivo</span>
+      </div>
+      <div v-else>
+        <h3 class="inputZoneText">Arquivo carregado com sucesso</h3>
+      </div>
       <input type="file" id="defaultFileInput" @change.prevent="inputChangeHandler"/>
     </div>
     <span class="uploadErrorText">
@@ -64,16 +72,18 @@
       </div>
     </span>
     <div class="fileInfoArea">
-      <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M14.2639 15.9375L12.5958 14.2834C11.7909 13.4851 11.3884 13.086 10.9266 12.9401C10.5204 12.8118 10.0838 12.8165 9.68048 12.9536C9.22188 13.1095 8.82814 13.5172 8.04068 14.3326L4.04409 18.2801M14.2639 15.9375L14.6053 15.599C15.4112 14.7998 15.8141 14.4002 16.2765 14.2543C16.6831 14.126 17.12 14.1311 17.5236 14.2687C17.9824 14.4251 18.3761 14.8339 19.1634 15.6514L20 16.4934M14.2639 15.9375L18.275 19.9565M18.275 19.9565C17.9176 20 17.4543 20 16.8 20H7.2C6.07989 20 5.51984 20 5.09202 19.782C4.71569 19.5903 4.40973 19.2843 4.21799 18.908C4.12796 18.7313 4.07512 18.5321 4.04409 18.2801M18.275 19.9565C18.5293 19.9256 18.7301 19.8727 18.908 19.782C19.2843 19.5903 19.5903 19.2843 19.782 18.908C20 18.4802 20 17.9201 20 16.8V16.4934M4.04409 18.2801C4 17.9221 4 17.4575 4 16.8V7.2C4 6.0799 4 5.51984 4.21799 5.09202C4.40973 4.71569 4.71569 4.40973 5.09202 4.21799C5.51984 4 6.07989 4 7.2 4H16.8C17.9201 4 18.4802 4 18.908 4.21799C19.2843 4.40973 19.5903 4.71569 19.782 5.09202C20 5.51984 20 6.0799 20 7.2V16.4934M17 8.99989C17 10.1045 16.1046 10.9999 15 10.9999C13.8954 10.9999 13 10.1045 13 8.99989C13 7.89532 13.8954 6.99989 15 6.99989C16.1046 6.99989 17 7.89532 17 8.99989Z" stroke="#f7fff7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <span class="fileName"> </span> | <span class="fileSize"> </span>
-      <span class="removeFileButton">
+      <div class="fileInfo">
+        <svg class="fileIcon" width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M14.2639 15.9375L12.5958 14.2834C11.7909 13.4851 11.3884 13.086 10.9266 12.9401C10.5204 12.8118 10.0838 12.8165 9.68048 12.9536C9.22188 13.1095 8.82814 13.5172 8.04068 14.3326L4.04409 18.2801M14.2639 15.9375L14.6053 15.599C15.4112 14.7998 15.8141 14.4002 16.2765 14.2543C16.6831 14.126 17.12 14.1311 17.5236 14.2687C17.9824 14.4251 18.3761 14.8339 19.1634 15.6514L20 16.4934M14.2639 15.9375L18.275 19.9565M18.275 19.9565C17.9176 20 17.4543 20 16.8 20H7.2C6.07989 20 5.51984 20 5.09202 19.782C4.71569 19.5903 4.40973 19.2843 4.21799 18.908C4.12796 18.7313 4.07512 18.5321 4.04409 18.2801M18.275 19.9565C18.5293 19.9256 18.7301 19.8727 18.908 19.782C19.2843 19.5903 19.5903 19.2843 19.782 18.908C20 18.4802 20 17.9201 20 16.8V16.4934M4.04409 18.2801C4 17.9221 4 17.4575 4 16.8V7.2C4 6.0799 4 5.51984 4.21799 5.09202C4.40973 4.71569 4.71569 4.40973 5.09202 4.21799C5.51984 4 6.07989 4 7.2 4H16.8C17.9201 4 18.4802 4 18.908 4.21799C19.2843 4.40973 19.5903 4.71569 19.782 5.09202C20 5.51984 20 6.0799 20 7.2V16.4934M17 8.99989C17 10.1045 16.1046 10.9999 15 10.9999C13.8954 10.9999 13 10.1045 13 8.99989C13 7.89532 13.8954 6.99989 15 6.99989C16.1046 6.99989 17 7.89532 17 8.99989Z" stroke="#f7fff7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="fileName">{{ fileName }}</span>|<span class="fileSize">{{ fileSize }}</span>
+        <!-- <div class="progressBar"> </div> -->
+      </div>
+      <span class="removeFileButton" @click="removeFile">
         <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M18 6L17.1991 18.0129C17.129 19.065 17.0939 19.5911 16.8667 19.99C16.6666 20.3412 16.3648 20.6235 16.0011 20.7998C15.588 21 15.0607 21 14.0062 21H9.99377C8.93927 21 8.41202 21 7.99889 20.7998C7.63517 20.6235 7.33339 20.3412 7.13332 19.99C6.90607 19.5911 6.871 19.065 6.80086 18.0129L6 6M4 6H20M16 6L15.7294 5.18807C15.4671 4.40125 15.3359 4.00784 15.0927 3.71698C14.8779 3.46013 14.6021 3.26132 14.2905 3.13878C13.9376 3 13.523 3 12.6936 3H11.3064C10.477 3 10.0624 3 9.70951 3.13878C9.39792 3.26132 9.12208 3.46013 8.90729 3.71698C8.66405 4.00784 8.53292 4.40125 8.27064 5.18807L8 6M14 10V17M10 10V17" stroke="#f7fff7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </span>
-      <!-- <div class="progressBar"> </div> -->
     </div>
     <button type="button" class="convertButton"> Converter Imagem </button>
   </section>
@@ -124,9 +134,27 @@ function inputChangeHandler(event: Event) {
   }
 }
 
+function removeFile() {
+  const fileInfoArea = document.querySelector('.fileInfoArea') as HTMLElement;
+  fileName.value = '';
+  fileSize.value = '';
+  fileLoaded.value = null;
+  fileInfoArea.style.display = 'none';
+}
+
 watch(() => props.loadedImage, (newVal) => {
   if (newVal) {
     validateImage(newVal);
+  }
+});
+
+watch(() => fileLoaded.value, (newVal) => {
+  const fileInfoArea = document.querySelector('.fileInfoArea') as HTMLElement;
+
+  if (newVal) {
+    fileInfoArea.style.display = 'flex';
+  } else {
+    fileInfoArea.style.display = 'none';
   }
 });
 
@@ -208,7 +236,7 @@ watch(() => props.loadedImage, (newVal) => {
   padding: 10px 20px;
   border-radius: 25px;
 }
-.fileInfoArea > svg {
+.fileInfo > .fileIcon {
   margin-right: 10px;
 }
 .fileInfo {

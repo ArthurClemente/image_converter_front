@@ -85,12 +85,14 @@
         </svg>
       </span>
     </div>
+    <Select />
     <button type="button" class="convertButton"> Converter Imagem </button>
   </section>
 </template>
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
+import Select from './Select.vue';
 
 const fileName = ref<string>(''); 
 const fileSize = ref<string>('');

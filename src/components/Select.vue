@@ -1,14 +1,22 @@
 <template>
   <div class="select">
-    <select>
-      <option value="0">Selecione</option>
-      <option value="1">WEBP</option>
-      <option value="2">PNG</option>
-      <option value="3">JPEG</option>
+    <select @change="changeHandler">
+      <option value="">Selecione</option>
+      <option value="webp">WEBP</option>
+      <option value="png">PNG</option>
+      <option value="jpeg">JPEG</option>
     </select>
   </div>
 </template>
 
+<script setup lang="ts">
+const emit = defineEmits(['update:modelValue'])
+
+function changeHandler (event: Event) {
+  const target = event.target as HTMLSelectElement;
+  emit('update:modelValue', target.value);
+}
+</script>
 
 <style scoped>
 select {

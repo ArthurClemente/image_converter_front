@@ -85,19 +85,21 @@
         </svg>
       </span>
     </div>
-    <Select />
-    <button type="button" class="convertButton"> Converter Imagem </button>
+    <Select v-model="selectedType" />
+    <button type="submit" class="convertButton" @click.prevent="submitConvert"> Converter Imagem </button>
   </section>
 </template>
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import Select from './Select.vue';
+import axios from 'axios';
 
 const fileName = ref<string>(''); 
 const fileSize = ref<string>('');
 const fileLoaded = ref<File | null>(null);
 const errorMessage = ref<string>('');
+const selectedType = ref<string>('');
 
 const maxFileSize = 10485760; // 10MB
 
@@ -120,6 +122,7 @@ function validateImage(file: File): Boolean {
     errorMessage.value = 'O tamanho máximo permitido é de 10MB.';
     return false;
   }
+
   // check if the file is png, jpeg, jpg, gif or webp
   if (file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg' || file.type === 'image/gif' || file.type === 'image/webp') {
     fileName.value = file.name;
@@ -146,6 +149,42 @@ function removeFile() {
   fileSize.value = '';
   fileLoaded.value = null;
   fileInfoArea.style.display = 'none';
+}
+
+function submitConvert() {
+  const formData = new FormData();
+
+  if(!fileLoaded.value) {
+    errorMessage.value = 'Por favor selecione uma imagem válida.';
+    return;
+  }
+  if(!selectedType.value) {
+    errorMessage.value = 'Por favor selecione um formato de imagem.';
+    return;
+  }
+
+  formData.append('image', fileLoaded.value);
+  formData.append('imageType', selectedType.value);
+
+  convertRequest(formData);
+}
+
+async function convertRequest(FormData: FormData) {
+  try{
+    axios({
+      method: 'post',
+      url: 'http://localhost:8000/api/convert',
+      data: FormData,
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }).then((response) => {
+      console.log(response);
+    })
+  } catch (error) {
+    errorMessage.value = 'Erro ao converter imagem.';
+    console.error(error);
+  }
 }
 
 watch(() => props.loadedImage, (newVal) => {

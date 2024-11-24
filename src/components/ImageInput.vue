@@ -117,20 +117,18 @@ function closeAlert() {
 }
 
 function validateImage(file: File): Boolean {
-  // limit the size of file to 10MB
   if (file.size > maxFileSize) {
     errorMessage.value = 'O tamanho máximo permitido é de 10MB.';
     return false;
   }
 
-  // check if the file is png, jpeg, jpg, gif or webp
-  if (file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg' || file.type === 'image/gif' || file.type === 'image/webp') {
+  if (file.type === 'image/png' || file.type === 'image/jpeg' || file.type === 'image/jpg' || file.type === 'image/webp') {
     fileName.value = file.name;
     fileSize.value = `${(file.size / 1024).toFixed(2)} KB`;
     fileLoaded.value = file;
     return true;
   } else {
-    errorMessage.value = 'Por favor selecione uma imagem válida: PNG, JPEG, JPG, GIF ou WEBP.';
+    errorMessage.value = 'Por favor selecione uma imagem válida: PNG, JPEG, JPG ou WEBP.';
     return false;
   }
 }
@@ -164,7 +162,7 @@ function submitConvert() {
   }
 
   formData.append('image', fileLoaded.value);
-  formData.append('imageType', selectedType.value);
+  formData.append('typeToConvert', selectedType.value);
 
   convertRequest(formData);
 }

@@ -178,6 +178,7 @@ async function convertRequest(FormData: FormData) {
       }
     }).then((response) => {
       console.log(response);
+      window.open('http://localhost:8000/api/download/' + response.data.convertedFileName);
     })
   } catch (error) {
     errorMessage.value = 'Erro ao converter imagem.';

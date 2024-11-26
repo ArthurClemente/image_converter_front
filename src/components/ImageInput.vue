@@ -85,7 +85,7 @@
         </svg>
       </span>
     </div>
-    <Select v-model="selectedType" />
+    <Select v-model="selectedType" :loaded-imagetype=loadedImageType />
     <button type="submit" class="convertButton" @click.prevent="submitConvert"> Converter Imagem </button>
   </section>
 </template>
@@ -100,8 +100,9 @@ const fileSize = ref<string>('');
 const fileLoaded = ref<File | null>(null);
 const errorMessage = ref<string>('');
 const selectedType = ref<string>('');
+const loadedImageType = ref<string>('');
 
-const maxFileSize = 10485760; // 10MB
+const maxFileSize = 104857600;
 
 const props = defineProps(['loadedImage']);
 
@@ -126,6 +127,7 @@ function validateImage(file: File): Boolean {
     fileName.value = file.name;
     fileSize.value = `${(file.size / 1024).toFixed(2)} KB`;
     fileLoaded.value = file;
+    loadedImageType.value = file.type;
     return true;
   } else {
     errorMessage.value = 'Por favor selecione uma imagem válida: PNG, JPEG, JPG ou WEBP.';

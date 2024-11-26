@@ -1,16 +1,17 @@
 <template>
   <div class="select">
-    <select @change="changeHandler">
+    <select @change="changeHandler" :loaded-imagetype=loadedImagetype>
       <option value="">Selecione</option>
-      <option value="webp">WEBP</option>
-      <option value="png">PNG</option>
-      <option value="jpeg">JPEG</option>
+      <option :disabled="loadedImagetype == 'image/webp'" value="webp">WEBP</option>
+      <option :disabled="loadedImagetype == 'image/png'" value="png">PNG</option>
+      <option :disabled="loadedImagetype == 'image/jpeg' || loadedImagetype == 'image/jpg'" value="jpeg">JPEG</option>
     </select>
   </div>
 </template>
 
 <script setup lang="ts">
 const emit = defineEmits(['update:modelValue'])
+defineProps<{ loadedImagetype: string | null }>()
 
 function changeHandler (event: Event) {
   const target = event.target as HTMLSelectElement;

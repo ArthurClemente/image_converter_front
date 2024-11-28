@@ -31,3 +31,7 @@ coverage
 *.tsbuildinfo
 
 qodana.yaml
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

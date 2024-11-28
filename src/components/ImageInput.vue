@@ -85,7 +85,10 @@
         </svg>
       </span>
     </div>
-    <Select v-model="selectedType" :loaded-imagetype=loadedImageType />
+    <div class="selectArea">
+      <span class="selectAreaText">Selecione o formato desejado</span>
+      <Select v-model="selectedType" :loaded-imagetype=loadedImageType />
+    </div>
     <button type="submit" class="convertButton" @click.prevent="submitConvert"> Converter Imagem </button>
   </section>
 </template>
@@ -284,6 +287,16 @@ watch(() => props.loadedImage, (newVal) => {
 }
 .removeFileButton {
   cursor: pointer;
+}
+.selectArea {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+.selectArea .selectAreaText {
+  font-size: 16px;
+  margin-left: 8px;
+  margin-bottom: 4px;
 }
 .convertButton {
   background-color: #023e8a;
